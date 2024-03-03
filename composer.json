@@ -1,0 +1,15 @@
+{
+    "name": "caiqu/book-php-object-orientation",
+    "autoload": {
+        "psr-4": {
+            "Caiqu\\BookPhpObjectOrientation\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Caique Bispo",
+            "email": "caiquebispo0023@gmail.com"
+        }
+    ],
+    "require": {}
+}
