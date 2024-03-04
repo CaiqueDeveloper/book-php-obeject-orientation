@@ -1,34 +1,28 @@
 <?php
 
 // init autoload
+
 require_once __DIR__ . '/vendor/autoload.php';
 
-use Caiqu\BookPhpObjectOrientation\Class\Fabricante;
-use Caiqu\BookPhpObjectOrientation\Class\Product;
-use Caiqu\BookPhpObjectOrientation\Class\Cesta;
+use Caiqu\BookPhpObjectOrientation\Class\ContaCorrente;
+use Caiqu\BookPhpObjectOrientation\Class\ContaPoupanca;
 
-$fabricante = new Fabricante('Faker Fabricante', 'Rua ali perto', '99123154654');
-$product = new Product('Xiaomi Redmi Note 12 S', 1, 1080.99);
+$contas = [];
+$contas[] = new ContaPoupanca('P0001', '12313213', 135.50);
+$contas[] = new ContaCorrente('C0001', '12313213', 135.50, 890.99);
 
-// criando associação
-$product->setFabricante($fabricante);
+foreach ($contas as $conta) {
 
-//criando composição
-$product->setCaracteristicas('cor', 'preto fosco');
-$product->setCaracteristicas('tela', 'amoled');
+    print $conta->getInfo() . "<br>";
+    print "Saldo: {$conta->getSaldo()}" . "<br><br>";
+    print "Deposito de 700 <br><br>";
+    $conta->depositar(700);
 
-//criando agregação
-$cesta = new Cesta;
-$cesta->addItem(new Product('Xiaomi Redmi Note 12 S', 1, 1080.99));
-$cesta->addItem(new Product('Samsung Galax', 1, 1080.99));
-$cesta->addItem(new Product('Iphone', 1, 1080.99));
+    print $conta->getInfo() . "<br>";
+    print "Saldo: {$conta->getSaldo()} <br><br>";
+    print "Saque de 389.99 <br><br>";
+    $conta->sacar(389.90);
 
-?>
-<h3>Cesta de Itens</h3>
-<ul>
-    <?php foreach ($cesta->getItens() as $item) : ?>
-        <li>
-            <?= $item->getDescricao(); ?> - <?= 'R$ ' . number_format($item->getValor(), 2, ',', '.'); ?>
-        </li>
-    <?php endforeach; ?>
-</ul>
+    print $conta->getInfo() . "<br>";
+    print "Saldo: {$conta->getSaldo()} <br><br>";
+}
