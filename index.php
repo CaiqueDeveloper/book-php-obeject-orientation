@@ -5,6 +5,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 use Caiqu\BookPhpObjectOrientation\Class\Fabricante;
 use Caiqu\BookPhpObjectOrientation\Class\Product;
+use Caiqu\BookPhpObjectOrientation\Class\Cesta;
 
 $fabricante = new Fabricante('Faker Fabricante', 'Rua ali perto', '99123154654');
 $product = new Product('Xiaomi Redmi Note 12 S', 1, 1080.99);
@@ -16,11 +17,18 @@ $product->setFabricante($fabricante);
 $product->setCaracteristicas('cor', 'preto fosco');
 $product->setCaracteristicas('tela', 'amoled');
 
-echo "Produto: {$product->getDescricao()} - Fabricante {$product->getFabricante()->getNome()}" . PHP_EOL;
+//criando agregação
+$cesta = new Cesta;
+$cesta->addItem(new Product('Xiaomi Redmi Note 12 S', 1, 1080.99));
+$cesta->addItem(new Product('Samsung Galax', 1, 1080.99));
+$cesta->addItem(new Product('Iphone', 1, 1080.99));
 
-echo "<br>Caracteristicas do Produto<br>";
-
-foreach ($product->getCarcteristicas() as $caracteristica) {
-
-    echo "{$caracteristica->getNome()} - {$caracteristica->getValor()} <br>";
-}
+?>
+<h3>Cesta de Itens</h3>
+<ul>
+    <?php foreach ($cesta->getItens() as $item) : ?>
+        <li>
+            <?= $item->getDescricao(); ?> - <?= 'R$ ' . number_format($item->getValor(), 2, ',', '.'); ?>
+        </li>
+    <?php endforeach; ?>
+</ul>

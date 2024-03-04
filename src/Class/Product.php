@@ -22,6 +22,10 @@ class Product
     {
         return $this->descicao;
     }
+    public function getValor(): float
+    {
+        return $this->preco;
+    }
     //associação
     public function setFabricante(Fabricante $fabricante): void
     {
