@@ -2,27 +2,15 @@
 
 // init autoload
 
+use Caiqu\BookPhpObjectOrientation\Class\Orcamento;
+use Caiqu\BookPhpObjectOrientation\Class\Product;
+use Caiqu\BookPhpObjectOrientation\Class\Servico;
+
 require_once __DIR__ . '/vendor/autoload.php';
 
-use Caiqu\BookPhpObjectOrientation\Class\ContaCorrente;
-use Caiqu\BookPhpObjectOrientation\Class\ContaPoupanca;
+$orcamento = new Orcamento;
+$orcamento->adicionar(new Product('Máquina de café', 10, 200), 1);
+$orcamento->adicionar(new Product('Barbeador', 5, 100), 3);
+$orcamento->adicionar(new Servico('Corta Grama', 350), 1);
 
-$contas = [];
-$contas[] = new ContaPoupanca('P0001', '12313213', 135.50);
-$contas[] = new ContaCorrente('C0001', '12313213', 135.50, 890.99);
-
-foreach ($contas as $conta) {
-
-    print $conta->getInfo() . "<br>";
-    print "Saldo: {$conta->getSaldo()}" . "<br><br>";
-    print "Deposito de 700 <br><br>";
-    $conta->depositar(700);
-
-    print $conta->getInfo() . "<br>";
-    print "Saldo: {$conta->getSaldo()} <br><br>";
-    print "Saque de 389.99 <br><br>";
-    $conta->sacar(389.90);
-
-    print $conta->getInfo() . "<br>";
-    print "Saldo: {$conta->getSaldo()} <br><br>";
-}
+print $orcamento->cacularTotal();

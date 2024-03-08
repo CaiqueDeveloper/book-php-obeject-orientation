@@ -2,7 +2,9 @@
 
 namespace Caiqu\BookPhpObjectOrientation\Class;
 
-class Product
+use Caiqu\BookPhpObjectOrientation\Interface\Orcavel;
+
+class Product implements Orcavel
 {
 
     private ?object $fabricante;
@@ -22,7 +24,7 @@ class Product
     {
         return $this->descicao;
     }
-    public function getValor(): float
+    public function getPreco(): float
     {
         return $this->preco;
     }
