@@ -11,5 +11,7 @@
             "email": "caiquebispo0023@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+      "ext-pdo": "*"
+    }
 }
