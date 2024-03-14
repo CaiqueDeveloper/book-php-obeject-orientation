@@ -1,9 +1,13 @@
 <?php
+
+use Database\DB;
+require_once __DIR__.'/Database/DB.php';
 function lista_combo_cidades($id = null): string
 {
-    $conn = new PDO('mysql:host=localhost;dbname=livros;', 'root', '');
-    $sth = $conn->query('select id, nome from cidade');
-    $row = $sth->fetchAll();
+    //Caso de uso 1
+     $row = DB::table('cidade')
+        ->select(['id', 'nome'])
+        ->get();
 
     $output = '';
     if($row){
