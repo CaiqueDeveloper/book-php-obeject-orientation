@@ -13,11 +13,12 @@ class DB
     private  static string $TYPE_QUERY = 'SELECT';
     private  static string $TYPE_CLAUSE_QUERY = 'WHERE';
     public static $db = null;
+    public static $drive = 'mysql';
     public static $setting = null;
 
     private function __construct()
     {
-        //self::$setting = require_once '../config.php';
+        self::$setting = require_once './config.php';
     }
 
     /**
@@ -26,7 +27,7 @@ class DB
     public static function getInstance(): ?PDO
     {
         if(!self::$db){
-            self::$db = new PDO('mysql:host=localhost;dbname=livros;user=root;password=');
+            self::$db = new PDO(self::$drive.':'.http_build_query(self::$setting['database'][self::$drive], '', ';'));
         }
         return self::$db;
     }

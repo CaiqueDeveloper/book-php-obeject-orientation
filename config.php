@@ -6,6 +6,12 @@ return [
             'dbname' => 'livros',
             'user' => 'root',
             'password'=> ''
+        ],
+        'pgslq' =>[
+            'host' => 'localhost',
+            'dbname' => '',
+            'user' => '',
+            'password'=> ''
         ]
     ]
 ];
