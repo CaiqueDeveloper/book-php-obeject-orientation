@@ -2,13 +2,11 @@
 
 use Database\DB;
 require_once __DIR__.'/Database/DB.php';
-$row = DB::table('cidade')
-    ->insert([
-        'id_estado' => 2,
-        'nome' => 'Ilheus'
-    ]);
-var_dump($row);
-exit();
+//$row = DB::table('cidade')
+//    ->insert([
+//        'id_estado' => 2,
+//        'nome' => 'Travessão'
+//    ]);
 function lista_combo_cidades($id = null): string
 {
 

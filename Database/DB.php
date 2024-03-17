@@ -8,10 +8,10 @@ class DB
     private static $TABLE = null;
     private static $QUERY = '';
     private static array $PARAMS_QUERY = [];
+    private static array $PARAMS_QUERY_UPDATE = [];
     private static  $CONDITIONAL_PARAMS_QUERY = [];
     private  static string $TYPE_QUERY = 'SELECT';
     private  static string $TYPE_CLAUSE_QUERY = 'WHERE';
-    protected static bool $IS_FIRST = false;
     public static $db = null;
     public static $setting = null;
 
@@ -77,6 +77,11 @@ class DB
     {
         return self::prepareSQLQuery()->fetch();
     }
+
+    /**
+     * @param array $params
+     * @return bool|\PDOStatement|null
+     */
     public static function insert(array $params)
     {
         self::$PARAMS_QUERY = $params;
@@ -94,6 +99,17 @@ class DB
     }
 
     /**
+     * @param $params
+     * @return void
+     */
+    public static  function update($params)
+    {
+        self::$PARAMS_QUERY_UPDATE = $params;
+        if(self::first()){
+            return self::prepareSQLQuery('UPDATE');
+        }
+    }
+    /**
      * @param $type_query
      * @return bool|\PDOStatement
      */
@@ -105,6 +121,7 @@ class DB
             'SELECT' => self::createSelectQuery(),
             'DELETE' => self::createDeleteQuery(),
             'INSERT' => self::createInsertQuery(),
+            'UPDATE' => self::createUpdateQuery(),
         };
     }
 
@@ -141,6 +158,29 @@ class DB
     }
 
     /**
+     * @return void
+     */
+    private static function createUpdateQuery()
+    {
+        $params = [];
+        foreach (self::$PARAMS_QUERY_UPDATE as $key => $param){
+           $params[] = $key.' = :'.$key;
+        }
+
+        if(sizeof(self::$CONDITIONAL_PARAMS_QUERY) > 0 && sizeof(self::$PARAMS_QUERY_UPDATE) > 0)
+        {
+            $field = implode(',', array_keys(self::$CONDITIONAL_PARAMS_QUERY));
+            $value = ':'.implode(':', array_keys(self::$CONDITIONAL_PARAMS_QUERY));
+            self::$QUERY = 'UPDATE '.self::$TABLE.' SET '.implode(', ',$params).' '.self::$TYPE_CLAUSE_QUERY. ' '.$field.' = '.$value;;
+            self::$CONDITIONAL_PARAMS_QUERY = array_merge(self::$CONDITIONAL_PARAMS_QUERY,self::$PARAMS_QUERY_UPDATE);
+
+        }else{
+            self::$QUERY = 'UPDATE '.self::$TABLE.' SET '.implode(', ',$params);
+        }
+
+        return self::executeQuery('UPDATE');
+    }
+    /**
      * @return bool|\PDOStatement
      */
     private static function createDeleteQuery(): bool|\PDOStatement|null
@@ -168,12 +208,23 @@ class DB
                 ->query(self::$QUERY);
         }
 
-        $params = sizeof(self::$CONDITIONAL_PARAMS_QUERY) > 0 ? self::$CONDITIONAL_PARAMS_QUERY : self::$PARAMS_QUERY;
-
         return self::getInstance()
             ->prepare(self::$QUERY)
-            ->execute(sizeof($params) > 0  ? $params : null);
+            ->execute(self::resolveParamsQuery());
+    }
 
+    /**
+     * @return array
+     */
+    private static function resolveParamsQuery(): array
+    {
+        $params = null;
+        if(sizeof(self::$CONDITIONAL_PARAMS_QUERY) > 0){
+            $params = self::$CONDITIONAL_PARAMS_QUERY;
+        }else{
+            $params = self::$PARAMS_QUERY;
+        }
+        return $params != null ? $params: self::$PARAMS_QUERY_UPDATE;
     }
 
 
