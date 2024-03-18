@@ -4,3 +4,5 @@ use Database\DB;
 
 DB::table('pessoa')
     ->insert($_POST);
+header('location: pessoa_list.php');
+exit();
