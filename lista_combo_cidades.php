@@ -4,7 +4,6 @@ use Database\DB;
 require_once __DIR__.'/Database/DB.php';
 function lista_combo_cidades($id = null): string
 {
-
      $row = DB::table('cidade')->get();
 
     $output = '';

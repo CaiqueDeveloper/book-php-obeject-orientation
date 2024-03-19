@@ -31,10 +31,10 @@
             <?php foreach($pessoas as $pessoa): ?>
                 <tr>
                     <td>
-                        <a href="form_edit.php?id={<?= $pessoa['id']; ?>}">Editar</a>
+                        <a href="form_edit.php?id=<?= $pessoa['id']; ?>">Editar</a>
                     </td>
                     <td>
-                        <a href="form_delete.php?id={<?= $pessoa['id']; ?>}">Deletar</a>
+                        <a href="form_delete.php?id=<?= $pessoa['id']; ?>">Deletar</a>
                     </td>
                     <td><?= $pessoa['id']; ?></td>
                     <td><?= $pessoa['nome']; ?></td>

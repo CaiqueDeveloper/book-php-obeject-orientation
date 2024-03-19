@@ -27,7 +27,7 @@ class DB
     public static function getInstance(): ?PDO
     {
         if(!self::$db){
-            self::$db = new PDO(self::$drive.':'.http_build_query(self::$setting['database'][self::$drive], '', ';'));
+            self::$db = new PDO('mysql:host=localhost;dbname=livros;user=root;password=');
         }
         return self::$db;
     }
@@ -106,6 +106,7 @@ class DB
     public static  function update($params)
     {
         self::$PARAMS_QUERY_UPDATE = $params;
+
         if(self::first()){
             return self::prepareSQLQuery('UPDATE');
         }
@@ -138,7 +139,7 @@ class DB
                 self::$TABLE. ' '.self::$TYPE_CLAUSE_QUERY.' '.
                 implode(' = ', self::$CONDITIONAL_PARAMS_QUERY);
 
-        }elseif(sizeof(self::$PARAMS_QUERY) > 0 && sizeof(self::$CONDITIONAL_PARAMS_QUERY)  < 0){
+        }elseif(sizeof(self::$CONDITIONAL_PARAMS_QUERY)  > 0){
             self::$QUERY= self ::$TYPE_QUERY.' * FROM ' . self::$TABLE. ' '.self::$TYPE_CLAUSE_QUERY.' '.implode(' = ', self::$CONDITIONAL_PARAMS_QUERY);
         }else{
             self::$QUERY= self ::$TYPE_QUERY.' * FROM ' . self::$TABLE;
@@ -178,7 +179,6 @@ class DB
         }else{
             self::$QUERY = 'UPDATE '.self::$TABLE.' SET '.implode(', ',$params);
         }
-
         return self::executeQuery('UPDATE');
     }
     /**
@@ -204,8 +204,9 @@ class DB
     private static function executeQuery(string $type_query = null): bool|\PDOStatement|null
     {
         $TYPE = $type_query ?: self::$TYPE_QUERY;
+
         if ($TYPE  == 'SELECT') {
-            return self::getInstance()
+          return self::getInstance()
                 ->query(self::$QUERY);
         }
 
